@@ -36,7 +36,7 @@ public abstract class CharacterController : MonoBehaviour
         current_health = total_health;
     }
 
-    public abstract void ChooseMoves();
+    public abstract MoveCombo ChooseMoves();
 
     public virtual void TakeDamage(int damage)
     {

@@ -1,8 +1,11 @@
+using UnityEngine;
+
 public class EnemyController : CharacterController
 {
-    public override void ChooseMoves()
+    public override MoveCombo ChooseMoves()
     {
         // pick move randomly
+        return moves[Random.Range(0, moves.Length)];
     }
 
     // Start is called before the first frame update

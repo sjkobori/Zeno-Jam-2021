@@ -2,7 +2,7 @@ public class PlayerController : CharacterController
 {
 
 
-    public override void ChooseMoves()
+    public override MoveCombo ChooseMoves()
     {
         throw new System.NotImplementedException();
     }

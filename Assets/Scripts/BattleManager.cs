@@ -14,7 +14,7 @@ public class BattleManager : MonoBehaviour
 
     bool pickingMoves;
 
-    bool isPlayerTurn;
+    public bool isPlayerTurn;
 
 
     private void Start()
@@ -30,7 +30,6 @@ public class BattleManager : MonoBehaviour
         pickingMoves = false;
         turn = 0;
 
-        TakeTurn();
     }
 
 
@@ -66,8 +65,9 @@ public class BattleManager : MonoBehaviour
     public void TakeEnemyTurn()
     {
         enemy.StartTurn();
-
-        enemy.ChooseMoves();
+        //randomly pick moves
+        moveQueue.Add(enemy.ChooseMoves());
+        
     }
 
     //index from menu to add to end of move queue
@@ -98,19 +98,21 @@ public class BattleManager : MonoBehaviour
 
     public void Ready()
     {
+        TakeTurn();
         Debug.Log("Ready Clicked");
         //DO QTE
         if (isPlayerTurn)
         {
             Debug.Log("Player Turn");
-            sequence.BeginSequence(player, enemy, this);
+            sequence.BeginSequence(player, enemy, this, true);
         }
         else
         {
             Debug.Log("Enemy Turn");
-            sequence.BeginSequence(enemy, player, this);
+            sequence.BeginSequence(enemy, player, this, false);
         }
-
+        moveQueue.Clear();
+        turn++;
     }
 
 }

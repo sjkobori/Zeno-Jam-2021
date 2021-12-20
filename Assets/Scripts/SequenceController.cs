@@ -16,6 +16,7 @@ public class SequenceController : MonoBehaviour
     private int totalInputs;
     private float activeDuration;
 
+    private bool isAttack;
     private int totalHits;
 
     string displayContent;
@@ -51,7 +52,8 @@ public class SequenceController : MonoBehaviour
                 //Resolve effect
                 foreach (MoveCombo move in moves)
                 {
-                    move.effect.TakeEffect(activeUser, activeTarget, ((float)totalHits) / totalInputs);
+                    move.effect.TakeEffect(activeUser, activeTarget, 
+                        isAttack ? ((float)totalHits) / totalInputs : (1- ((float)totalHits) / totalInputs));
                 }
             }
         }
@@ -61,8 +63,9 @@ public class SequenceController : MonoBehaviour
         }
     }
 
-    public void BeginSequence(CharacterController user, CharacterController target, BattleManager battleManager)
+    public void BeginSequence(CharacterController user, CharacterController target, BattleManager battleManager, bool isAttack)
     {
+        this.isAttack = isAttack;
         active = true;
         moves = battleManager.moveQueue;
 
