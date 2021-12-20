@@ -8,6 +8,15 @@ public class InputController : MonoBehaviour
     public bool rightPressed;
     public bool actionPressed;
 
+    
+    public float maxBuffer;
+
+    private float upBuffer;
+    private float downBuffer;
+    private float leftBuffer;
+    private float rightBuffer;
+    private float actionBuffer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,45 +30,73 @@ public class InputController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.UpArrow))
+
+        if (Input.GetKeyDown(KeyCode.UpArrow) )
         {
+            upBuffer = 0;
             upPressed = true;
+            
+            //start timer
         }
-        else
+        else if (upPressed && upBuffer < maxBuffer)
+        {
+            upBuffer += Time.deltaTime;
+            
+        } else
         {
             upPressed = false;
         }
 
-        if (Input.GetKey(KeyCode.DownArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             downPressed = true;
+        }
+        else if (downPressed && downBuffer < maxBuffer)
+        {
+            downBuffer += Time.deltaTime;
+
         }
         else
         {
             downPressed = false;
         }
 
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             leftPressed = true;
+        }
+        else if (leftPressed && leftBuffer < maxBuffer)
+        {
+            leftBuffer += Time.deltaTime;
+
         }
         else
         {
             leftPressed = false;
         }
 
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             rightPressed = true;
+        }
+        else if (rightPressed && rightBuffer < maxBuffer)
+        {
+            rightBuffer += Time.deltaTime;
+
         }
         else
         {
             rightPressed = false;
         }
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             actionPressed = true;
+        }
+        else if (actionPressed && actionBuffer < maxBuffer)
+        {
+            actionBuffer += Time.deltaTime;
+
         }
         else
         {
