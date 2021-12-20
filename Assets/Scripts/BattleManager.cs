@@ -7,6 +7,8 @@ public class BattleManager : MonoBehaviour
     public PlayerController player;
     public EnemyController enemy;
     public SequenceController sequence;
+    public AnimationManager animationManager;
+
 
     private int turn;
 
@@ -104,14 +106,18 @@ public class BattleManager : MonoBehaviour
         if (isPlayerTurn)
         {
             Debug.Log("Player Turn");
+            animationManager.PlayerAttack();
             sequence.BeginSequence(player, enemy, this, true);
         }
         else
         {
             Debug.Log("Enemy Turn");
+            animationManager.EnemyAttack();
             sequence.BeginSequence(enemy, player, this, false);
         }
         moveQueue.Clear();
+        animationManager.UpdateWorldState((player.current_health + enemy.current_health) /
+            ((float)(player.total_health + enemy.total_health)) * 100f);
         turn++;
     }
 

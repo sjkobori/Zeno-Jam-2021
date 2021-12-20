@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class SequenceController : MonoBehaviour
 {
+    public AnimationManager animationManager;
     public CharacterController activeUser;
     public CharacterController activeTarget;
     public QTEInterface qTE;
@@ -47,6 +48,14 @@ public class SequenceController : MonoBehaviour
             //if current timer > timing despawn
             if (activeTimer > activeDuration)
             {
+                if (isAttack)
+                {
+                    animationManager.EnemyHurt();
+                }
+                else
+                {
+                    animationManager.PlayerHurt();
+                }
                 Debug.Log("Finished Sequence: " + totalHits + " out of " + totalInputs + " hit!");
                 active = false;
                 //Resolve effect
