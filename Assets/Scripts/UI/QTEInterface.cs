@@ -8,11 +8,15 @@ public class QTEInterface : MonoBehaviour
     public GameObject leftArrow;
     public GameObject rightArrow;
 
+    public GameObject background;
+    Bounds bounds;
+
     private List<GameObject> currentObjects;
     // Start is called before the first frame update
     void Start()
     {
-
+        bounds = background.GetComponent<SpriteRenderer>().bounds;
+        currentObjects = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -21,19 +25,23 @@ public class QTEInterface : MonoBehaviour
 
     }
 
-    void DrawSequence(float currentTime, List<HitTracker.HitData> data)
+    public void DrawSequence(float currentTime, List<HitTracker.HitData> data)
     {
+        Debug.Log("# of hit data entries:" + data.Count);
         foreach(HitTracker.HitData hit in data)
         {
-           
+            
+            float timeDiff = hit.timing.time - currentTime;
+            
             if (!hit.hit 
-                && (hit.timing.time - currentTime) > -.25f 
-                && (hit.timing.time - currentTime) < -2f) //in range and not hit
+                && timeDiff > -.25f 
+                && timeDiff < 2f) //in range and not hit
             {
+                Debug.Log("visible");
                 DrawHit(currentTime,  hit);
             } else
             {
-
+                Debug.Log("not visible");
             }
         }
 
@@ -48,10 +56,16 @@ public class QTEInterface : MonoBehaviour
         GameObject currentHit;
         float hitTime = hit.timing.time;
 
+        float xPos = 0;
+        float yPos =   ((hitTime - currentTime)/2f) * bounds.max.y;
+
+
         switch(hit.timing.key)
         {
             case MoveCombo.DIRECTION.UP:
-                currentHit = Instantiate(upArrow);
+                Debug.Log("Drawing up arrow");
+                currentHit = Instantiate(upArrow, background.transform.position + new Vector3(xPos, yPos, -1), 
+                    Quaternion.identity);
                 break;
             case MoveCombo.DIRECTION.DOWN:
                 currentHit = Instantiate(downArrow);
@@ -63,5 +77,7 @@ public class QTEInterface : MonoBehaviour
                 currentHit = Instantiate(rightArrow);
                 break;
         }
+        
+
     }
 }

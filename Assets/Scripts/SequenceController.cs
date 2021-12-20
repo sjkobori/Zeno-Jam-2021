@@ -5,8 +5,9 @@ public class SequenceController : MonoBehaviour
 {
     public CharacterController activeUser;
     public CharacterController activeTarget;
+    public QTEInterface qTE;
 
-    private InputController input;
+    public InputController input;
     public bool active;
     private HitTracker hitTracker;
     private List<HitTracker.HitData> hitData;
@@ -40,7 +41,7 @@ public class SequenceController : MonoBehaviour
             //if you hit the correct button +- .25 secs, add to total percent hit
             DetectHit();
             //if timing is < 2 seconds away, spawn it
-
+            qTE.DrawSequence(activeTimer, hitData);
 
             //if current timer > timing despawn
             if (activeTimer > activeDuration)
@@ -53,6 +54,10 @@ public class SequenceController : MonoBehaviour
                     move.effect.TakeEffect(activeUser, activeTarget, ((float)totalHits) / totalInputs);
                 }
             }
+        }
+        else
+        {
+            activeTimer = 0;
         }
     }
 
@@ -70,9 +75,9 @@ public class SequenceController : MonoBehaviour
 
         //setup hit tracker
         hitTracker = new HitTracker(moves);
+        hitData = hitTracker.GetHitData();
 
-
-        foreach (HitTracker.HitData data in hitTracker.GetHitData())
+        foreach (HitTracker.HitData data in hitData)
         {
 
             if (data.timing.time > activeDuration)
@@ -92,7 +97,8 @@ public class SequenceController : MonoBehaviour
         List<HitTracker.HitData> data = hitTracker.GetHitData();
         for (int i = 0; i < data.Count; i++)
         {
-            if (Mathf.Abs(activeTimer - data[i].timing.time) < .25f) //add correct button
+            if (Mathf.Abs(activeTimer - data[i].timing.time) < .25f &&
+                IsMatchingInput(data[i].timing.key)) //add correct button
             {
                 displayContent += " " + data[i].timing.key.ToString();
                 HitTracker.HitData tempItem = new HitTracker.HitData();
@@ -107,10 +113,27 @@ public class SequenceController : MonoBehaviour
 
     }
 
+    private bool IsMatchingInput(MoveCombo.DIRECTION direction)
+    {
+        switch (direction)
+        {
+            case MoveCombo.DIRECTION.UP:
+                return input.upPressed;
+            case MoveCombo.DIRECTION.DOWN:
+                return input.downPressed;
+            case MoveCombo.DIRECTION.LEFT:
+                return input.leftPressed;
+            case MoveCombo.DIRECTION.RIGHT:
+                return input.rightPressed;
+            default:
+                return false;
+        }
+    }
+
     private void OnGUI()
     {
-        string content = displayContent == null ? "" : displayContent;
-        GUILayout.Label($"<color='black'><size=40>{content}</size></color>");
+        //string content = displayContent == null ? "" : displayContent;
+        //GUILayout.Label($"<color='black'><size=40>{content}</size></color>");
     }
     
 }
