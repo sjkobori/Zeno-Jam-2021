@@ -1,24 +1,22 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
-
+    public Text playerHP;
+    public Text enemyHP;
     //fields of all UI elements needed to control
-
-
-
-
-    // Start is called before the first frame update
-    void Start()
+    public void UpdatePlayerHP(int current, int total)
     {
-
+        playerHP.text = current + "/" + total;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UpdateEnemyHP(int current, int total)
     {
-
+        enemyHP.text = current + "/" + total;
     }
+
+
 
     void ShowAttackName(string attackName)
     {

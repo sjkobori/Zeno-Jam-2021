@@ -57,8 +57,8 @@ public class QTEInterface : MonoBehaviour
     {
         GameObject currentHit;
         float hitTime = hit.timing.time;
-        //float arrowWidth = arrowBounds.max.x / 2f;
-        float xPos = bounds.max.x * 2;
+        float arrowWidth = arrowBounds.max.x;
+        float xPos = bounds.center.x / 2;
         float yPos =   ((hitTime - currentTime)) * bounds.max.y;
 
 
@@ -66,22 +66,22 @@ public class QTEInterface : MonoBehaviour
         {
             case MoveCombo.DIRECTION.UP:
                 Debug.Log("Drawing up arrow");
-                currentHit = Instantiate(upArrow, bounds.min + new Vector3(3 / 8f * xPos, yPos, -1), 
+                currentHit = Instantiate(upArrow, new Vector3(bounds.center.x + 1.5f * arrowWidth, +bounds.min.y + yPos, 1),
                     Quaternion.identity);
                 currentObjects.Add(currentHit);
                 break;
             case MoveCombo.DIRECTION.DOWN:
-                currentHit = Instantiate(downArrow, bounds.min + new Vector3(5 / 8f * xPos, yPos, -1),
+                currentHit = Instantiate(downArrow, new Vector3(bounds.center.x -1.5f * arrowWidth, +bounds.min.y + yPos, 1),
                     Quaternion.identity);
                 currentObjects.Add(currentHit);
                 break;
             case MoveCombo.DIRECTION.LEFT:
-                currentHit = Instantiate(leftArrow, bounds.min + new Vector3(1/8f * xPos, yPos, -1),
+                currentHit = Instantiate(leftArrow, new Vector3(bounds.center.x + -3.5f * arrowWidth, +bounds.min.y + yPos, 1),
                     Quaternion.identity);
                 currentObjects.Add(currentHit);
                 break;
             case MoveCombo.DIRECTION.RIGHT:
-                currentHit = Instantiate(rightArrow, bounds.min + new Vector3(7 / 8f * xPos, yPos, -1),
+                currentHit = Instantiate(rightArrow, new Vector3(bounds.center.x + 3.5f * arrowWidth, +bounds.min.y + yPos, 1),
                     Quaternion.identity);
                 currentObjects.Add(currentHit);
                 break;

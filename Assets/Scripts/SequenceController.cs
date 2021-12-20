@@ -62,7 +62,7 @@ public class SequenceController : MonoBehaviour
                 foreach (MoveCombo move in moves)
                 {
                     move.effect.TakeEffect(activeUser, activeTarget, 
-                        isAttack ? ((float)totalHits) / totalInputs : (1- ((float)totalHits) / totalInputs));
+                        isAttack ? ((float)totalHits) / totalInputs : (1f- (((float)totalHits) / totalInputs)));
                 }
             }
         }
@@ -77,7 +77,7 @@ public class SequenceController : MonoBehaviour
         this.isAttack = isAttack;
         active = true;
         moves = battleManager.moveQueue;
-
+        
         activeUser = user;
         activeTarget = target;
         //start timer (moves only begin after 1 sec)

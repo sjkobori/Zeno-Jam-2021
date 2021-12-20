@@ -14,12 +14,15 @@ public abstract class CharacterController : MonoBehaviour
     void Start()
     {
         statuses = new Status[0];
+        Reset();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-
+        if(current_health <=0)
+        {
+            Die();
+        }
     }
 
     public virtual void StartTurn()
@@ -48,7 +51,7 @@ public abstract class CharacterController : MonoBehaviour
         current_health -= damage;
     }
 
-    private void Die()
+    protected virtual void Die()
     {
         dead = true;
         //play death animation

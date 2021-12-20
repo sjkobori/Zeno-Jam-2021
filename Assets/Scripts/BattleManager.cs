@@ -8,7 +8,13 @@ public class BattleManager : MonoBehaviour
     public EnemyController enemy;
     public SequenceController sequence;
     public AnimationManager animationManager;
+    public UIController uIController;
+    public TransitionManager transitionManager;
 
+    float transitionTimer;
+    float transitionTime = 4f;
+    bool playerDead;
+    bool enemyDead;
 
     private int turn;
 
@@ -19,9 +25,56 @@ public class BattleManager : MonoBehaviour
     public bool isPlayerTurn;
 
 
+
+
     private void Start()
     {
         DoBattle(player, enemy);
+    }
+
+    private void Update()
+    {
+        if (playerDead || enemyDead)
+        {
+            transitionTimer += Time.deltaTime;
+        }
+        if (transitionTimer > transitionTime)
+        {
+            if (playerDead)
+            {
+                transitionManager.ToGameOver();
+            }
+            else
+            {
+                transitionManager.ToWin();
+            }
+            
+        }
+        animationManager.UpdateWorldState((player.current_health + enemy.current_health) /
+               ((float)(player.total_health + enemy.total_health)) * 100f);
+        EchoHP();
+        if (player.current_health <= 0)
+        {
+            player.current_health = 0;
+            playerDead = true;
+        }
+        if (enemy.current_health <= 0)
+        {
+            enemy.current_health = 0;
+            enemyDead = true;
+        }
+        if ((playerDead || enemyDead) && transitionTimer <.5f)
+        {
+            if (playerDead)
+            {
+                animationManager.PlayerDeath();
+            }
+            else
+            {
+                animationManager.EnemyDeath();
+            }
+            activeBattle = false;
+        }
     }
 
     void DoBattle(PlayerController player, EnemyController enemy)
@@ -31,14 +84,19 @@ public class BattleManager : MonoBehaviour
         activeBattle = true;
         pickingMoves = false;
         turn = 0;
-
+        EchoHP();
     }
 
-
+    private void EchoHP()
+    {
+        uIController.UpdatePlayerHP(player.current_health, player.total_health);
+        uIController.UpdateEnemyHP(enemy.current_health, enemy.total_health);
+    }
 
     // Update is called once per frame
     void TakeTurn()
     {
+        
         if (turn % 2 == 0)
         {
             isPlayerTurn = true;
@@ -51,10 +109,7 @@ public class BattleManager : MonoBehaviour
             TakeEnemyTurn();
 
         }
-        if (player.IsDead() || enemy.IsDead())
-        {
-            activeBattle = false;
-        }
+        
     }
 
     public void TakePlayerTurn()
@@ -68,6 +123,7 @@ public class BattleManager : MonoBehaviour
     {
         enemy.StartTurn();
         //randomly pick moves
+        moveQueue.Clear();
         moveQueue.Add(enemy.ChooseMoves());
         
     }
@@ -75,6 +131,7 @@ public class BattleManager : MonoBehaviour
     //index from menu to add to end of move queue
     public void AddMoveToQueue(int index)
     {
+        moveQueue.Clear();
         if (index < player.moves.Length)
         {
             moveQueue.Add(player.moves[index]);
@@ -100,7 +157,9 @@ public class BattleManager : MonoBehaviour
 
     public void Ready()
     {
+
         TakeTurn();
+        
         Debug.Log("Ready Clicked");
         //DO QTE
         if (isPlayerTurn)
@@ -115,9 +174,8 @@ public class BattleManager : MonoBehaviour
             animationManager.EnemyAttack();
             sequence.BeginSequence(enemy, player, this, false);
         }
-        moveQueue.Clear();
-        animationManager.UpdateWorldState((player.current_health + enemy.current_health) /
-            ((float)(player.total_health + enemy.total_health)) * 100f);
+        
+        
         turn++;
     }
 

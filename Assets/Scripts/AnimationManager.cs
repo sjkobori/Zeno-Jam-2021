@@ -7,6 +7,7 @@ public class AnimationManager : MonoBehaviour
     public Animator playerAnimator;
     public Animator enemyAnimator;
     public Animator worldAnimator;
+    public Animator deathAnimator;
 
     public void PlayerAttack()
     {
@@ -16,6 +17,11 @@ public class AnimationManager : MonoBehaviour
     public void PlayerHurt()
     {
         playerAnimator.Play("main_hurt");
+    }
+
+    public void PlayerDeath()
+    {
+        deathAnimator.Play("player_death");
     }
 
     public void EnemyAttack()
@@ -28,14 +34,19 @@ public class AnimationManager : MonoBehaviour
         enemyAnimator.Play("enemy_hurt");
     }
 
+    public void EnemyDeath()
+    {
+        enemyAnimator.Play("enemy_death");
+    }
+
     public void UpdateWorldState(float percent)
     {
         if (percent > -1 && percent < 20)
         {
-            World0();
+            World80();
         } else if (percent > 20 && percent < 40)
         {
-            World20();
+            World60();
         }
         else if (percent > 40 && percent < 60)
         {
@@ -43,11 +54,13 @@ public class AnimationManager : MonoBehaviour
         }
         else if (percent > 60 && percent < 80)
         {
-            World60();
+            
+            World20();
         }
         else if (percent > 80)
         {
-            World80();
+            
+            World0();
         }
     }
 
