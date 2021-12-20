@@ -21,7 +21,7 @@ public class InputController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.UpArrow))
         {
             upPressed = true;
         }
@@ -30,7 +30,7 @@ public class InputController : MonoBehaviour
             upPressed = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetKey(KeyCode.DownArrow))
         {
             downPressed = true;
         }
@@ -39,7 +39,7 @@ public class InputController : MonoBehaviour
             downPressed = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
             leftPressed = true;
         }
@@ -48,7 +48,7 @@ public class InputController : MonoBehaviour
             leftPressed = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.RightArrow))
         {
             rightPressed = true;
         }
@@ -57,7 +57,7 @@ public class InputController : MonoBehaviour
             rightPressed = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
         {
             actionPressed = true;
         }

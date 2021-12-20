@@ -10,13 +10,15 @@ public class QTEInterface : MonoBehaviour
 
     public GameObject background;
     Bounds bounds;
+    Bounds arrowBounds;
 
     private List<GameObject> currentObjects;
     // Start is called before the first frame update
     void Start()
     {
-        bounds = background.GetComponent<SpriteRenderer>().bounds;
+        bounds = background.GetComponentInChildren<SpriteRenderer>().bounds;
         currentObjects = new List<GameObject>();
+        arrowBounds = upArrow.GetComponent<SpriteRenderer>().bounds;
     }
 
     // Update is called once per frame
@@ -47,7 +49,7 @@ public class QTEInterface : MonoBehaviour
 
         foreach(GameObject gameObject in currentObjects)
         {
-            Destroy(gameObject);
+            Destroy(gameObject, 0.02f);
         }
     }
 
@@ -55,26 +57,33 @@ public class QTEInterface : MonoBehaviour
     {
         GameObject currentHit;
         float hitTime = hit.timing.time;
+        //float arrowWidth = arrowBounds.max.x / 2f;
+        float xPos = bounds.max.x * 2;
+        float yPos =   ((hitTime - currentTime)) * bounds.max.y;
 
-        float xPos = 0;
-        float yPos =   ((hitTime - currentTime)/2f) * bounds.max.y;
 
-
-        switch(hit.timing.key)
+        switch (hit.timing.key)
         {
             case MoveCombo.DIRECTION.UP:
                 Debug.Log("Drawing up arrow");
-                currentHit = Instantiate(upArrow, background.transform.position + new Vector3(xPos, yPos, -1), 
+                currentHit = Instantiate(upArrow, bounds.min + new Vector3(3 / 8f * xPos, yPos, -1), 
                     Quaternion.identity);
+                currentObjects.Add(currentHit);
                 break;
             case MoveCombo.DIRECTION.DOWN:
-                currentHit = Instantiate(downArrow);
+                currentHit = Instantiate(downArrow, bounds.min + new Vector3(5 / 8f * xPos, yPos, -1),
+                    Quaternion.identity);
+                currentObjects.Add(currentHit);
                 break;
             case MoveCombo.DIRECTION.LEFT:
-                currentHit = Instantiate(leftArrow);
+                currentHit = Instantiate(leftArrow, bounds.min + new Vector3(1/8f * xPos, yPos, -1),
+                    Quaternion.identity);
+                currentObjects.Add(currentHit);
                 break;
             case MoveCombo.DIRECTION.RIGHT:
-                currentHit = Instantiate(rightArrow);
+                currentHit = Instantiate(rightArrow, bounds.min + new Vector3(7 / 8f * xPos, yPos, -1),
+                    Quaternion.identity);
+                currentObjects.Add(currentHit);
                 break;
         }
         

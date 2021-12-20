@@ -87,7 +87,7 @@ public class SequenceController : MonoBehaviour
             totalInputs++;
 
         }
-        activeDuration += 0.5f;
+        activeDuration += 3f;
         Debug.Log(totalInputs + " total inputs");
     }
 
